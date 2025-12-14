@@ -13,6 +13,7 @@ export default function Login() {
 try{
   const response= await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login",data)
  console.log("SUCCESS:", response.data);
+  localStorage.setItem("token", response.data.token);
   toast.success("mabrooooooooooook 3mlna login");
   navigate('/dashboard')
 

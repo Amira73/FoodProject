@@ -3,11 +3,19 @@
     background-size: cover;
     background-position: center center;
 }
+html, body {
+  overflow-x: hidden;
+}
 .bg-overlay{
    background: linear-gradient(45deg, rgba(47,140,96,.6), rgba(0,0,0,.99));
 }
 .primary-color{
 color: #4AA35A !important;
+}
+.bg-header{
+    background-color: #009247;
+     width: 100%;
+  overflow-x: hidden;
 }
 .color-text{
     color:#49494999 !important
@@ -17,4 +25,102 @@ color: #4AA35A !important;
 }
 .w-35 {
   width: 35% !important;
+}
+.w-100c {
+  width: 100% !important;
+}
+.sidebar-container .ps-sidebar-container{
+position: relative;
+   
+    min-height: 100vh;
+    color: aliceblue;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 3;
+    background-color:rgba(31,38, 62, 1);
+    border-top-right-radius: 45px;
+}
+.sidebar-container{
+  transition: all 2s !important;
+ 
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  overflow-y: auto;
+
+
+ 
+}
+
+
+ .sidebar-container .ps-menu-button:hover{
+  background-color:rgba(0,146, 77, .1) !important;
+  border-left: 5px solid rgba(0, 146, 71, 1);
+
+ }
+ .sidebar-container .sidebar-item{
+margin-left: 0px !important;
+ }  
+ .btn-bg{
+background-color: #009247 !important;
+ }
+ 
+
+
+
+
+ table {
+  border-collapse: separate;
+  border-spacing: 0 10px; 
+}
+
+
+.table-header-row th {
+  background-color: #e9edf2; 
+  padding: 16px;
+  font-weight: 600;
+  border: none;
+}
+
+
+
+.table-custom {
+   
+  border-collapse: separate;
+ 
+  border-spacing: 0 12px; 
+}
+.table-customtr{
+ width: 100% !important;
+ background-color: #4AA35A !important;
+
+
+}
+
+.table-custom thead th {
+
+  background: #e9edf2;
+  padding: 16px 20px;
+  border: 0;
+}
+
+/* rounded للـ header */
+.table-custom thead th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.table-custom thead th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.notfound-bg{
+  background-image: url(assets/images/Vector.png);
+    background-size:auto;
+
+}
+
+.img-margin{
+  margin-left: 220px !important;
 }
