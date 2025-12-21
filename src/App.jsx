@@ -28,6 +28,7 @@ import RecipiesList from "./RecipieModule/Components/RecipiesList/REcipiesList.j
 import CategoryData from "./CategoriesModule/Components/CategoryData/CategoryData.jsx";
 import CategoriesList from "./CategoriesModule/Components/CategoriesList/CategoriesList.jsx";
 import UsersList from "./UsersModule/Components/UsersList/UsersList.jsx";
+import ProtectedRoute from "./Context/ProtectedRoute.jsx";
 
 
 
@@ -48,7 +49,8 @@ const routes = createBrowserRouter([
   },
   {
     path: "dashboard",
-    element: <MasterLayout />,
+       element: <ProtectedRoute element={<MasterLayout />} />,
+
     errorElement: <NotFound />,
     children: [
       { index: true, element: <DashBoard /> },

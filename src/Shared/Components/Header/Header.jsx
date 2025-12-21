@@ -4,7 +4,7 @@ import header from '../../../assets/images/header.png'
 export default function Header({title,description,imgUrl}) {
   return (
   <>
-<header className="bg-header overflow-hidden">
+<header className="bg-header overflow-hidden rounded rounded-4">
   <div className="container-fluid px-0">
     <div className="row align-items-center p-3 text-white">
       

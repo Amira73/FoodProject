@@ -7,15 +7,34 @@ import { useState } from 'react';
 
 export default function MaserLayout() {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const sidebarWidth = isCollapsed ? 80 : 300;
 
   return (
 
-   <div className="d-flex vh-100">
-      <div style={{ width:   isCollapsed ? "80px" : "18%" }}>
-        <SideBar isCollapsed={isCollapsed} toggleCollapse={() => setIsCollapsed(v => !v)} />
+   <div style={{ minHeight: "100vh" }}>
+      <div
+    style={{
+      width: sidebarWidth,
+      transition: "width 0.3s",
+      flexShrink: 0,
+     
+    }}
+  >
+        <SideBar 
+        className="sidebar-container"
+          style={{ "--sidebar-width": `${sidebarWidth}px` }}
+          isCollapsed={isCollapsed}
+           toggleCollapse={() => setIsCollapsed(v => !v)} />
       </div>
 
-      <div className="flex-grow-1">
+      <div  
+      style={{
+      marginLeft: sidebarWidth,          
+      transition: "margin-left .3s",
+      minHeight: "100vh",
+    }}
+      
+      className="flex-grow-1 d-flex flex-column main-content">
         <NavBar toggleSidebar={() => setIsCollapsed(v => !v)} />
         <Outlet />
       </div>

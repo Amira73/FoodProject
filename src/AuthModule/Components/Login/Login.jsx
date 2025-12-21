@@ -5,25 +5,32 @@ import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import { useAuth } from '../../../Context/AuthContext'
+import { useState } from 'react'
+import { http } from '../../../Api/Httpinstance'
+
 
 export default function Login() {
+
+   const { savaLoginData , loginData, isAuthenticated} = useAuth()
   const {register, formState:{errors},handleSubmit}=useForm()
+  const [showPassword, setShowPassword] = useState(false);
   let navigate=useNavigate()
   const onSubmit=async (data)=>{
 try{
-  const response= await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login",data)
+  const response= await http.post("/Users/Login",data)
  console.log("SUCCESS:", response.data);
   localStorage.setItem("token", response.data.token);
+    savaLoginData()
+   console.log("LOGIN DATA:", loginData);
   toast.success("mabrooooooooooook 3mlna login");
   navigate('/dashboard')
-
-
 }
 catch(error){
    console.log("ERROR OBJECT:", error);
     console.log("ERROR RESPONSE:", error.response?.data);
  console.log(error.response.data.message)
- toast.error("m3rfnaa4 n3ml login");
+toast.error(`m3rfnaa4 n3ml login - ${error.response.data.message}`);
 }
   }
   return (
@@ -78,7 +85,16 @@ catch(error){
     //     "Password must be 8+ chars and include upper, lower, number, and symbol",
     // },
    })}
-   type="password" class="form-control" placeholder="password" aria-label="Username" aria-describedby="basic-addon1"/>
+  type={showPassword ? "text" : "password"} class="form-control" placeholder="password" aria-label="Username" aria-describedby="basic-addon1"/>
+    <button
+    type="button"
+    className="input-group-text"
+    onClick={() => setShowPassword((s) => !s)}
+    aria-label={showPassword ? "Hide password" : "Show password"}
+    style={{ cursor: "pointer" }}
+  >
+    <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+  </button>
 </div>
  {errors.password && <p className='alert alert-danger'>{errors?.password.message}</p>}
 <div className="links d-flex justify-content-between m-2">

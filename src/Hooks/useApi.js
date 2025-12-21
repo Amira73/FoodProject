@@ -29,3 +29,18 @@ export function useApiPost({ http, invalidateKeys = [], config }) {
     },
   });
 }
+
+
+export function useApiDelete({ http, invalidateKeys = [], config } = {}) {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ path }) => {
+      const res = await http.delete(path, config);
+      return res.data;
+    },
+    onSuccess: () => {
+      invalidateKeys.forEach((k) => qc.invalidateQueries({ queryKey: k }));
+    },
+  });
+   }

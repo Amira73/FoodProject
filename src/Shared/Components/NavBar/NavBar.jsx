@@ -1,7 +1,10 @@
 import React from 'react'
 import profile from '../../../assets/images/profile.png'
+import { useAuth } from '../../../Context/AuthContext'
 
 export default function NavBar({toggleSidebar}) {
+
+  const { savaLoginData , loginData, isAuthenticated} = useAuth()
   return (
   <>
   <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -21,7 +24,7 @@ export default function NavBar({toggleSidebar}) {
 />
         </li>
         <li className="nav-item">
-          <h4>Ameera</h4>
+         {loginData ? <h4>{loginData.userName}</h4> : <h4>Guest</h4>}
         </li>
    
       

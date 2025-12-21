@@ -3,23 +3,57 @@ import headerImg from '../../../assets/images/header2.png'
 import Header from '../../../Shared/Components/Header/Header'
 import { useMemo, useState } from "react";
 import { createHttpClient } from "../../../Api/Http.js";
-import { useApiGet, useApiPost } from "../../../Hooks/useApi.js";
+import { useApiGet, useApiPost,useApiDelete } from "../../../Hooks/useApi.js";
 import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import NoData from '../../../Shared/Components/NoData/NoData.jsx';
+import { http }  from "../../../Api/Httpinstance.js";
+import Buttono from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import DeleteConfirmation from '../../../Shared/Components/DeleteConfirmation/DeleteConfirmation.jsx';
+import FillRecipies from '../../../Shared/Components/FillRecipies/FillRecipies.jsx';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function REcipiesList() {
+let navigate=useNavigate()
 
-
-      const http = useMemo(
-      () => createHttpClient("https://upskilling-egypt.com:3006/api/v1"),
-      []
-    );
+    //   const http = useMemo(
+    //   () => createHttpClient("https://upskilling-egypt.com:3006/api/v1"),
+    //   []
+    // );
    
   
   
     const [pageNumber, setPageNumber] = useState(1);
     const [name, setName] = useState("");
+    const [show, setShow] = useState(false);
+    const [RecipieId, setRecipieId] = useState(0);
+    const [RecipieName, setRecipieName] = useState('');
+      const handleClose = () => setShow(false);
+      const handleShow = (recipie) => {
+      
+        setRecipieId(recipie.id)
+        setRecipieName(recipie.name)
+        setShow(true);
+      }
+        const handleEditClick = (recipie) => {
+          setRecipieId(recipie.id)
+          alert(recipie.id)
+          console.log("clicked id:", RecipieId);
+            navigate("/dashboard/recipie-data", {
+              state: {
+                mode: "edit",
+                recipieId: recipie.id,   
+              },
+            });
+          };
   
+
+
+
+
+        
     const pageSize = 10;
   
   
@@ -31,14 +65,44 @@ export default function REcipiesList() {
     });
      console.log(data);
   
-    if (isLoading) return <p>Loading...</p>;
+  
+
+
+   const {
+     mutate: deleteRecipie,
+    
+   } = useApiDelete({
+     http,
+     invalidateKeys: [["recipies"]], 
+   });
+     if (isLoading) return <p>Loading...</p>;
     if (isError) return <p>Failed to load categories</p>;
   
    const recipies = data?.data ?? []
+     const handleDelete = () => {
+   
+       alert(RecipieId)
+     deleteRecipie({ path: `/userRecipe/${RecipieId}` });
+     handleClose()
+     };
   return (
     <>
+  
+     <Modal show={show} onHide={handleClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+       <DeleteConfirmation deleteItem="Recipie " name={RecipieName}></DeleteConfirmation>
+        <Modal.Footer>
+          
+          <Buttono variant="outline-danger"onClick={handleDelete} >
+           Delete This item
+          </Buttono>
+        </Modal.Footer>
+      </Modal>
     <Header title="Recipes Items" description="You can now add your items that any user can order it from the Application and you can edit" imgUrl={headerImg}></Header>
-      <h1>Recipies List</h1>
+    <FillRecipies title="Add"/>
+      <h3 className='mx-3'>Recipies List</h3>
 
 
 
@@ -61,6 +125,7 @@ export default function REcipiesList() {
         </thead>
         <tbody>
          { recipies.length > 0 ? recipies.map((recipie, idx)=>  
+         
              <tr key={recipie._id || recipie.id || idx}>
             <td>{(pageNumber - 1) * pageSize + idx + 1}</td>
              <td>{recipie.name}</td>
@@ -101,13 +166,19 @@ export default function REcipiesList() {
               </button>
             </li>
             <li>
-              <button className="dropdown-item primary-color" onClick={() => console.log("Edit")}>
+              <button className="dropdown-item primary-color"
+               onClick={() =>{
+              console.log("recipieeeeeeeeeee"+recipie.id)
+                handleEditClick(recipie)
+              
+               }
+               }>
                 <i className="fa-regular fa-pen-to-square me-2"></i> Edit
               </button>
             </li>
            
             <li>
-              <button className="dropdown-item primary-color" onClick={() => console.log("Delete")}>
+              <button className="dropdown-item primary-color" onClick={() => handleShow(recipie)}>
                 <i className="fa-regular fa-trash-can me-2"></i> Delete
               </button>
             </li>
